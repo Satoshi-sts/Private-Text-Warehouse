@@ -1,0 +1,40 @@
+body{
+  width: 500px;
+  height: 300px;
+}
+
+#search_area{
+  padding: 10px 5px;
+}
+
+#seachBox{
+  width: 150px;
+  height: 20px;
+}
+
+#text_area{
+  background-color: rgba(255, 192, 203, 0.5);
+  padding: 10px 5px;
+}
+
+#text_box{
+  width: 150px;
+  height: 20px;
+}
+
+removeModeBtn{
+  position: right;
+}
+/*
+#storage_area{
+  background-color: rgba(255, 192, 203, 0.5);
+  padding-top: 10px;
+  width: 400px;
+  height: 200px;
+}
+*/
+
+#storage_list li{
+  font-size: 20px;
+  padding: 5px 0px;
+}

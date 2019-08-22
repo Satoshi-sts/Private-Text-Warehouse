@@ -50,7 +50,7 @@ function copyTextToClipboard(textVal){
   bodyElm.removeChild(copyFrom);
 }
 
-//リストの要素にクリックイベントを付与する。
+//リストの要素にクリックイベントを付与する。初期表示時と削除モードOFF時に付与され、要素押下で削除
 function addClickEventToList(){
   //storage_listの子要素 li の子要素は、対象がテキストならspan、URLならaと固定されていないため、jQueryのchildren()で子要素を全て取得
   $('#storage_list').children('li').children().off("click");
@@ -69,26 +69,21 @@ function addClickEventToList(){
       window.open(targetText, "newtab");
     }
   });
-
-  addHoverEventToList();
 }
 
-//要素ホバー時のイベント追加
-function addHoverEventToList(){
-  /*
-  //storage_listの子要素 li の子要素は、対象がテキストならspan、URLならaと固定されていないため、jQueryのchildren()で子要素を全て取得
-  $('#storage_list').children('li').children().hover(function(e){
-    const removeSpan = document.createElement("span");
-    removeSpan.setAttribute("id", "removeSpan");
-    removeSpan.innerHTML = "削除";
-    removeSpan.style.fontSize = "5px";
-    removeSpan.style.padding = "0px 5px";
-    e.target.append(removeSpan);
-    //以下、ホバー解除時の処理
-  }, function(e){
-    e.target.children.removeSpan.remove();
-  });
-  */
+//リストの要素にクリックイベントを付与する。削除モードがONの時に付与され、要素押下で削除
+function addRemoveClickEventToList(){
+  $('#storage_list').children('li').children().off("click");
+  $('#storage_list').children('li').children().on("click", function(e){
+    const targetValue = e.target.childNodes[0].textContent;
+    const targetGroup = e.target.dataset.group;
+    const targetKey = targetValue + targetGroup;
+    if(window.confirm(targetValue + " を削除します。OK?")){
+      chrome.storage.local.remove(targetKey, function(){
+        e.target.parentNode.remove();
+      });
+    };
+  })
 }
 
 //保存ボタン押下時に呼ばれる処理。ストレージに値を保存し、保存したデータをDOMに追加
@@ -185,16 +180,19 @@ function main(){
 
   //削除モードボタン押下時
   $('#removeModeBtn').on("click", function(e){
-    var str = e.target.value;
+    let str = e.target.value;
     if(str == "RemoveMode ON"){
+      //クリックイベントを削除する事で、要素クリックしてもコピーされない。
+      addRemoveClickEventToList();
+      $('body').css("background", "rgba(192, 192, 192, 0.7)");
       str = "RemoveMode OFF";
     }else{
+      //クリックイベントを再度付与
+      addClickEventToList();
+      $('body').css("background", "");
       str = "RemoveMode ON";
     }
     e.target.value = str;
-    //クリックイベントを削除する事で、要素クリックしてもコピーされない。
-    $('#storage_list').children('li').children().off("click");
-
 
   });
 }

@@ -1,12 +1,16 @@
 {
   "name": "Text Warehouse",
-  "version": "1.0",
+  "version": "1.1",
   "manifest_version": 2,
   "browser_action":{
     "default_popup": "popup.html",
     "default_title": "Text warehouse"
   },
   "permissions": [
-    "storage"
-  ]
+    "storage",
+    "tabs"
+  ],
+  "icons": {
+    "16": "icon.png"
+  }
 }

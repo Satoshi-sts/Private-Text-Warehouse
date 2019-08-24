@@ -1,6 +1,6 @@
 body{
-  width: 500px;
-  height: 300px;
+  width: 600px;
+  height: 400px;
 }
 
 #search_area{
@@ -25,16 +25,8 @@ body{
 removeModeBtn{
   position: right;
 }
-/*
-#storage_area{
-  background-color: rgba(255, 192, 203, 0.5);
-  padding-top: 10px;
-  width: 400px;
-  height: 200px;
-}
-*/
 
 #storage_list li{
-  font-size: 20px;
+  font-size: 15px;
   padding: 5px 0px;
 }

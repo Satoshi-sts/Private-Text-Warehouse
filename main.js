@@ -22,11 +22,16 @@ function addElement(storageObject, type){
   }else if(storageObject.dataGroup == 'url'){
     a.setAttribute("href", storageObject.value);
     a.setAttribute("data-group", storageObject.dataGroup)
-    a.innerHTML = storageObject.value;
+    a.textContent = storageObject.label;
+    //以下のクリックイベントを付与し、以下の書き方しないと、上手くURL押しても遷移しない
+    a.addEventListener("click", function(){
+      chrome.tabs.create({url: a.href});
+    });
     li.append(a);
   }
   //”削除”要素を追加
   $('#storage_list').append(li);
+
 
 }
 
@@ -102,15 +107,25 @@ function saveTextToStorage(text, dataGroup){
     }
     //登録可能時、以下を実行
     else{
+      //ラベルの初期値は、テキストボックスの入力値
+      let label = text;
+      //データ登録時、URLとして登録されようとしたら、ラベル（表示名）を別に命名するか確認
+      if(dataGroup == 'url'){
+        if(window.confirm("表示名を別途命名しますか？")){
+          label = window.prompt("表示名を入力してください。", "");
+        }
+      }
+
+      //データの登録
       const obj = {
         [key]: {
           "dataGroup": dataGroup,
-          "value": text
+          "value": text,
+          "label": label
         }
       }
       chrome.storage.local.set(obj, function(){
         chrome.storage.local.get(key, function(items){
-          alert(JSON.stringify(items))
           const targetVal = items[key];
           //クリックイベントを削除
           $('#storage_list').children('li').off('click');

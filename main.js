@@ -113,6 +113,13 @@ function saveTextToStorage(text, dataGroup){
       if(dataGroup == 'url'){
         if(window.confirm("表示名を別途命名しますか？")){
           label = window.prompt("表示名を入力してください。", "");
+          //空白文字のみの場合弾くため、空白文字を除去する。
+          let emptyCheck = label.replace(/\s+/g, "");
+          //表示名を入力せずに or 空白文字のみの場合、弾く
+          if(!emptyCheck){
+            alert("空白文字の文字を入力してください。");
+            return;
+          }
         }
       }
 
@@ -199,6 +206,9 @@ function main(){
     if(str == "RemoveMode ON"){
       //クリックイベントを削除する事で、要素クリックしてもコピーされない。
       addRemoveClickEventToList();
+      $('a').click(function(){
+        return false;
+      });
       $('body').css("background", "rgba(192, 192, 192, 0.7)");
       str = "RemoveMode OFF";
     }else{

@@ -79,16 +79,21 @@ function addClickEventToList(){
 //リストの要素にクリックイベントを付与する。削除モードがONの時に付与され、要素押下で削除
 function addRemoveClickEventToList(){
   $('#storage_list').children('li').children().off("click");
-  $('#storage_list').children('li').children().on("click", function(e){
-    const targetValue = e.target.childNodes[0].textContent;
+  $('#storage_list').children('li').children().on("mousedown", function(e){
     const targetGroup = e.target.dataset.group;
+    const targetLabel = e.target.childNodes[0].textContent;
+    //クリックしたデータがtextだった場合、valueの値をキー値に含む。URLだった場合、hrefの値をキー値に含む。
+    const targetValue = targetGroup == 'text' ? targetLabel : this.href;
+
+    //ローカルストレージに保存しているキー値と同じ形式にする
     const targetKey = targetValue + targetGroup;
-    if(window.confirm(targetValue + " を削除します。OK?")){
+
+    if(window.confirm(targetLabel + " を削除します。OK?")){
       chrome.storage.local.remove(targetKey, function(){
         e.target.parentNode.remove();
       });
     };
-  })
+  });
 }
 
 //保存ボタン押下時に呼ばれる処理。ストレージに値を保存し、保存したデータをDOMに追加
@@ -206,9 +211,6 @@ function main(){
     if(str == "RemoveMode ON"){
       //クリックイベントを削除する事で、要素クリックしてもコピーされない。
       addRemoveClickEventToList();
-      $('a').click(function(){
-        return false;
-      });
       $('body').css("background", "rgba(192, 192, 192, 0.7)");
       str = "RemoveMode OFF";
     }else{

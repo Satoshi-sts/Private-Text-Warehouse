@@ -7,15 +7,24 @@
   <body>
 
     <div id="search_area">
-      <input type="text" class="searchBox" placeholder="Search for...">
-      <input type="button" class="searchBtn" value="SEARCH">
+      <input type="text" id="searchBox" placeholder="Search for...">
+      <input type="button" id="searchBtn" value="SEARCH">
+        <input type="button" id="allClearBtn" value="Storage Clear">
     </div>
+
     <div id="text_area">
       <input type="text" id="text_box" placeholder="Input some text">
       <input type="checkbox" class="checkbox" id="dataGroupText" value="text" checked>Text
       <input type="checkbox" class="checkbox" id="dataGroupUrl" value="url">URL
       <input type="button" id="save" value="SAVE">
-      <input type="button" id="removeModeBtn" value="RemoveMode ON">
+      <!--<input type="button" id="removeModeBtn" value="RemoveMode ON">-->
+      <div id="removeSwitchArea">
+        <div id="switchArea">
+          <input type="checkbox" id="removeModeToggle">
+          <label for="removeModeToggle"><span></span></label>
+          <div id="swImg"><img src="images/trash-solid.svg" alt=""></div>
+        </div>
+      </div>
     </div>
 
     <div id="storage_area">
@@ -28,6 +37,5 @@
   <script type="text/javascript" src="jquery.easing.js"></script>
   <link rel="stylesheet" href="stylesheet.css">
 </html>
-<script type="text/javascript">
 
 </script>

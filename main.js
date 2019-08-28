@@ -58,6 +58,7 @@ function copyTextToClipboard(textVal){
 //リストの要素にクリックイベントを付与する。初期表示時と削除モードOFF時に付与され、要素押下で削除
 function addClickEventToList(){
   //storage_listの子要素 li の子要素は、対象がテキストならspan、URLならaと固定されていないため、jQueryのchildren()で子要素を全て取得
+  $('#storage_list').children('li').children().off("mousedown");
   $('#storage_list').children('li').children().off("click");
   $('#storage_list').children('li').children().on("click", function(e){
     const targetGroup = e.target.dataset.group;
@@ -79,6 +80,7 @@ function addClickEventToList(){
 //リストの要素にクリックイベントを付与する。削除モードがONの時に付与され、要素押下で削除
 function addRemoveClickEventToList(){
   $('#storage_list').children('li').children().off("click");
+  $('#storage_list').children('li').children().off("mousedown");
   $('#storage_list').children('li').children().on("mousedown", function(e){
     const targetGroup = e.target.dataset.group;
     const targetLabel = e.target.childNodes[0].textContent;
@@ -202,25 +204,37 @@ function main(){
     const text = $('#text_box').val();
     //チェックされてるチェックボックスの値を全て取得。今回は2つしかチェックボックスが無いので、for文とかで回す必要なし
     const dataGroup = $('input:checked').val();
-    saveTextToStorage(text, dataGroup);
+    if(text){
+      saveTextToStorage(text, dataGroup);
+    }else{
+      alert("保存したいテキストを入力してください。");
+    }
+
   });
 
   //削除モードボタン押下時
-  $('#removeModeBtn').on("click", function(e){
-    let str = e.target.value;
-    if(str == "RemoveMode ON"){
+  $('input[id="removeModeToggle"]').change(function(e){
+    //remove mode の値を取得
+    var status = $("[id=removeModeToggle]").prop("checked");
+    //remove modeがONの時、削除時の処理
+    if(status){
       //クリックイベントを削除する事で、要素クリックしてもコピーされない。
       addRemoveClickEventToList();
-      $('body').css("background", "rgba(192, 192, 192, 0.7)");
-      str = "RemoveMode OFF";
+      //$('body').css("background", "rgba(192, 192, 192, 0.7)");
     }else{
       //クリックイベントを再度付与
       addClickEventToList();
-      $('body').css("background", "");
-      str = "RemoveMode ON";
+      //$('body').css("background", "");
     }
-    e.target.value = str;
+  });
 
+  //All Clearボタン押下時確認ポップアップ出すストレージ内のデータを全削除
+  $('#allClearBtn').on("click", function(){
+    if(window.confirm("登録されているデータを全て削除します。よろしいですか？")){
+      //ストレージ内のデータを全削除
+      chrome.storage.local.clear();
+      $("#storage_list").empty();
+    };
   });
 }
 

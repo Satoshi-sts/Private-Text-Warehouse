@@ -6,6 +6,10 @@ body{
   color: #dfe6e9;
 }
 
+a:visited{
+  color: #ffeaa7;
+}
+
 #allClearBtn{
   float: right;
   width: 100px;

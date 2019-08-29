@@ -1,5 +1,6 @@
 //初期表示時、ストレージにあるデータをページにリスト表示
 function init(){
+  $('#storage_list').empty();
   chrome.storage.local.get(null, function(objects){
     const storageKeys = Object.keys(objects);
       storageKeys.forEach(function(key){
@@ -11,7 +12,7 @@ function init(){
 }
 
 //初期表示時とデータ登録時に呼ばれる処理で、DOMに要素を追加する処理。
-function addElement(storageObject, type){
+function addElement(storageObject){
   const a = document.createElement("a");
   const span = document.createElement("span");
   const li = document.createElement("li");
@@ -31,8 +32,6 @@ function addElement(storageObject, type){
   }
   //”削除”要素を追加
   $('#storage_list').append(li);
-
-
 }
 
 //引数の値をクリップボードにコピーする
@@ -160,44 +159,37 @@ function listAllRemove(){
   }
 }
 
-
 function main(){
 
 //チェックボックス押下時の処理。1つのみチェック付けれるようにする。
-  $('.checkbox').on("click", function(){
-    $('.checkbox').prop('checked', false);
-    $(this).prop('checked', true);
-  });
+//$('.checkbox').on("click", changeCheckbox());
+
+$('.checkbox').on("click", function(){
+  $('.checkbox').prop('checked', false);
+  $(this).prop('checked', true);
+});
 
 //検索ボタン押下時の処理。ボタン押されたら、ストレージから値取ってきて、検索テキストと比較する
-  $('.searchBox').on("keyup",function(){
-    const searchText = $('.searchBox').val();
-    const resultVal = [];
+$('#searchBox').on("input",function(){
+  //検索ボックスが空の時は、何もしない。※何か１文字入力し、バックスペースで文字を消した時何もしない
+  if(!($(this).val())){
+    init();
+    return;
+  }
 
-    //検索ボックスが空かどうか
-    if(searchText){
-      // リストを削除
-      listAllRemove();
-
-      //リスト削除後、検索結果のリストを描画
-      chrome.storage.local.get(null, function(objects){
-        const storageVal = Object.values(objects);
-        storageVal.forEach(function(val){
-          if(val.value.indexOf(searchText) != -1){
-            //検索結果と随時渡して画面描画
-            addElement(val);
-          }
-          addClickEventToList();
-        });
-      });
-    }else{
-      //リストを削除
-      listAllRemove();
-      //ストレージにある全オブジェクトのリストを表示
-      init();
-    };
-
+  const searchText = $(this).val();
+  let result = {};
+  //ストレージ内のデータを全件取得
+  chrome.storage.local.get(null, function(objects){
+    $('#storage_list').empty();
+    Object.values(objects).forEach(function(val){
+      if(val['label'].indexOf(searchText) != -1){
+        addElement(val);
+      }
+    });
+    addClickEventToList();
   });
+});
 
 //保存ボタン押下時の処理。
   $('#save').on("click", function(){

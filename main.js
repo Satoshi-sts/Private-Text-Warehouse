@@ -1,9 +1,9 @@
 //初期表示時、ストレージにあるデータをページにリスト表示
 function init(){
   $('#storage_list').empty();
-  chrome.storage.local.get(null, function(objects){
+  chrome.storage.local.get(null, (objects) =>{
     const storageKeys = Object.keys(objects);
-      storageKeys.forEach(function(key){
+      storageKeys.forEach((key) =>{
         addElement(objects[key]);
       });
       //上記の、画面初期表示時にDOMに要素を追加する処理が終わったら、クリックイベントを追加する。
@@ -25,7 +25,7 @@ function addElement(storageObject){
     a.setAttribute("data-group", storageObject.dataGroup)
     a.textContent = storageObject.label;
     //以下のクリックイベントを付与し、以下の書き方しないと、上手くURL押しても遷移しない
-    a.addEventListener("click", function(){
+    a.addEventListener("click", () =>{
       chrome.tabs.create({url: a.href});
     });
     li.append(a);
@@ -59,7 +59,7 @@ function addClickEventToList(){
   //storage_listの子要素 li の子要素は、対象がテキストならspan、URLならaと固定されていないため、jQueryのchildren()で子要素を全て取得
   $('#storage_list').children('li').children().off("mousedown");
   $('#storage_list').children('li').children().off("click");
-  $('#storage_list').children('li').children().on("click", function(e){
+  $('#storage_list').children('li').children().on("click", (e) =>{
     const targetGroup = e.target.dataset.group;
     const targetText = e.target.childNodes[0].textContent;
     if(targetGroup == 'text'){
@@ -80,7 +80,7 @@ function addClickEventToList(){
 function addRemoveClickEventToList(){
   $('#storage_list').children('li').children().off("click");
   $('#storage_list').children('li').children().off("mousedown");
-  $('#storage_list').children('li').children().on("mousedown", function(e){
+  $('#storage_list').children('li').children().on("mousedown", (e) =>{
     const targetGroup = e.target.dataset.group;
     const targetLabel = e.target.childNodes[0].textContent;
     //クリックしたデータがtextだった場合、valueの値をキー値に含む。URLだった場合、hrefの値をキー値に含む。
@@ -90,7 +90,7 @@ function addRemoveClickEventToList(){
     const targetKey = targetValue + targetGroup;
 
     if(window.confirm(targetLabel + " を削除します。OK?")){
-      chrome.storage.local.remove(targetKey, function(){
+      chrome.storage.local.remove(targetKey, () =>{
         e.target.parentNode.remove();
       });
     };
@@ -102,7 +102,7 @@ function saveTextToStorage(text, dataGroup){
   //ストレージに保存するキーとして使用する。TextとURLを最後尾に付与する事で、テキストとして保存した時とURLで保存した時とでキーが被らない。
   const key = text + dataGroup;
   //登録可否チェック。Textとして、もしくはURLとして既に登録されていたら、アーリーリターン。
-  chrome.storage.local.get(key, function(item){
+  chrome.storage.local.get(key, (item) =>{
     if(Object.values(item).length > 0){
       if(Object.values(item)[0].dataGroup == 'text'){
         alert(`[${text}] はテキストとして既に登録されているため、テキストとして追加登録は出来ません。`);
@@ -137,8 +137,8 @@ function saveTextToStorage(text, dataGroup){
           "label": label
         }
       }
-      chrome.storage.local.set(obj, function(){
-        chrome.storage.local.get(key, function(items){
+      chrome.storage.local.set(obj, () =>{
+        chrome.storage.local.get(key, (items) =>{
           const targetVal = items[key];
           //クリックイベントを削除
           $('#storage_list').children('li').off('click');
@@ -180,9 +180,9 @@ $('#searchBox').on("input",function(){
   const searchText = $(this).val();
   let result = {};
   //ストレージ内のデータを全件取得
-  chrome.storage.local.get(null, function(objects){
+  chrome.storage.local.get(null, (objects) =>{
     $('#storage_list').empty();
-    Object.values(objects).forEach(function(val){
+    Object.values(objects).forEach((val) =>{
       if(val['label'].indexOf(searchText) != -1){
         addElement(val);
       }
@@ -192,7 +192,7 @@ $('#searchBox').on("input",function(){
 });
 
 //保存ボタン押下時の処理。
-  $('#save').on("click", function(){
+  $('#save').on("click", () =>{
     const text = $('#text_box').val();
     //チェックされてるチェックボックスの値を全て取得。今回は2つしかチェックボックスが無いので、for文とかで回す必要なし
     const dataGroup = $('input:checked').val();
@@ -205,7 +205,7 @@ $('#searchBox').on("input",function(){
   });
 
   //削除モードボタン押下時
-  $('input[id="removeModeToggle"]').change(function(e){
+  $('input[id="removeModeToggle"]').change((e) =>{
     //remove mode の値を取得
     var status = $("[id=removeModeToggle]").prop("checked");
     //remove modeがONの時、削除時の処理
@@ -221,7 +221,7 @@ $('#searchBox').on("input",function(){
   });
 
   //All Clearボタン押下時確認ポップアップ出すストレージ内のデータを全削除
-  $('#allClearBtn').on("click", function(){
+  $('#allClearBtn').on("click", () =>{
     if(window.confirm("登録されているデータを全て削除します。よろしいですか？")){
       //ストレージ内のデータを全削除
       chrome.storage.local.clear();
@@ -231,7 +231,7 @@ $('#searchBox').on("input",function(){
 }
 
 //画面読み込み時、全てのDOMが読まれた後に、JavaScriptの処理を開始
-document.addEventListener("DOMContentLoaded", function(){
+document.addEventListener("DOMContentLoaded", () =>{
   init();
   main();
 });

@@ -6,10 +6,12 @@ body{
   color: #dfe6e9;
 }
 
+/* リンクの色変えないと、背景色の関係で見づらい */
 a:visited, a:link{
   color: #ffeaa7;
 }
 
+/* == 全削除ボタン == */
 #allClearBtn{
   float: right;
   width: 100px;
@@ -21,27 +23,48 @@ a:visited, a:link{
   color: white;
   border-radius: 24px;
   cursor: pointer;
+  margin-top: 1px;
 }
 
+/* == ボタンフォーカス時、外枠が表示されないようにする == */
 .outline_none{
   outline: none;
 }
 
+/* == 全削除ボタンホバー時 == */
 #allClearBtn:hover{
   background: #ff7675;
 }
 
+/* == 検索エリア == */
 #search_area{
-  padding: 10px 5px;
+  position: relative;
+  margin-bottom: 5px;
 }
 
+/* == テキスト入力欄や保存ボタンがある部分 == */
 #text_area{
   background-color: #191919;
   padding: 10px 5px;
   color: white;
 }
 
-#searchBox, #text_box{
+/* == 検索ボックスと入力ボックス == */
+#searchBox{
+  width: 150px;
+  height: 25px;
+  margin-left: 30px;
+  border: 0;
+  background: none;
+  text-align: center;
+  border: 2px solid #3498db;
+  color: white;
+  border-radius: 24px;
+  transition: 0.25s;
+}
+
+/* == 検索ボックスと入力ボックス == */
+#text_box{
   width: 150px;
   height: 25px;
   border: 0;
@@ -53,7 +76,8 @@ a:visited, a:link{
   transition: 0.25s;
 }
 
-#searchBtn, #save{
+/* == 保存ボタン == */
+#save{
   width: 75px;
   height: 25px;
   border: 0;
@@ -64,21 +88,24 @@ a:visited, a:link{
   border-radius: 24px;
   cursor: pointer;
 }
-
-#searchBtn:hover, #save:hover{
+/* == 保存ボタンホバー時 == */
+#save:hover{
   background: #2ecc71;
 }
 
+/* == 検索ボックス、テキストボックスフォーカス時 == */
 #searchBox:focus, #text_box:focus{
   width: 180px;
   border-color: #2ecc71;
 }
 
+/* == 保存されてる値を一覧表示している部分 == */
 #storage_list li{
   font-size: 15px;
   padding: 5px 0px;
 }
 
+/* == 削除トグル == */
 #removeSwitchArea{
   width: 70px;
   height: 33px;
@@ -140,6 +167,13 @@ a:visited, a:link{
  transition     : .2s;                 /* 滑らか変化         */
 }
 
+/* === 丸部分のSTYLE（ONのとき） =========================== */
+#switchArea input[type="checkbox"]:checked ~ #swImg {
+ transform      : translateX(40px);    /* 丸も右へ移動       */
+ background     : #78bd78;             /* カーソルタブの背景 */
+}
+
+/* == 削除トグルの丸部分内にあるゴミ箱イメージ == */
 #switchArea img{
   width: 20px;
   height: 20px;
@@ -147,8 +181,68 @@ a:visited, a:link{
   padding-top: 2px;
 }
 
-/* === 丸部分のSTYLE（ONのとき） =========================== */
-#switchArea input[type="checkbox"]:checked ~ #swImg {
- transform      : translateX(40px);    /* 丸も右へ移動       */
- background     : #78bd78;             /* カーソルタブの背景 */
+/* == 検索ボックス横の虫眼鏡 == */
+#search_area .search_icon{
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  margin-top: 5px;
+  margin-left: 38px;
+}
+
+/* == はてなマーク == */
+#search_area .info_icon {
+  transition: 0.25s;
+  position: absolute;
+  width: 25px;
+  height: 25px;
+  margin-top: 2.8px;
+  border-style: none;
+}
+
+.info_icon:hover{
+  transform: scale(1.5, 1.5);
+  transition: 0.25s;
+  cursor: pointer;
+}
+
+.close_video_player.off, .video_area.off{
+  display: none;
+}
+
+.close_video_player.on{
+  width: 30px;
+  height: 30px;
+  transition: 0.25s;
+  position: absolute;
+  z-index: 101;
+  top: 10;
+  left: 10;
+  color: white;
+  cursor: pointer;
+}
+
+.video_area.on{
+  transition: 0.25s;
+  position: absolute;
+  background-size: cover;
+  z-index: 100;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  margin: auto;
+  background: rgba(0, 0, 0, .7);
+  display: inline-block;
+}
+
+.video_player {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  margin: auto;
+  width: 600px;
+  height: 500px;
 }

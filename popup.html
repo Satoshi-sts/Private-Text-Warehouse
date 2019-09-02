@@ -6,10 +6,16 @@
   </head>
   <body>
 
+    <div class="video_area off">
+      <img class="close_video_player off" src="images/times-solid-white.png">
+      <video src="movies/introduce.mp4" class="video_player" autoplay muted></video>
+    </div>
+
     <div id="search_area">
+      <img src="images/question-circle-regular.svg" class="info_icon">
+      <img src="images/search-solid.svg" class="search_icon">
       <input type="text" class="outline_none" id="searchBox" placeholder="Search for...">
-      <input type="button" class="outline_none" id="searchBtn" value="SEARCH">
-        <input class="outline_none" type="button" id="allClearBtn" value="Storage Clear">
+      <input class="outline_none" type="button" id="allClearBtn" value="Storage Clear">
     </div>
 
     <div id="text_area">
@@ -30,6 +36,7 @@
       <ul id="storage_list">
       </ul>
     </div>
+
   </body>
   <script type="text/javascript" src="main.js"></script>
   <script type="text/javascript" src="jQuery.js"></script>

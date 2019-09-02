@@ -228,6 +228,23 @@ $('#searchBox').on("input",function(){
       $("#storage_list").empty();
     };
   });
+
+  //infoアイコン押下時、アイコンの親要素のクラスを追加/削除
+  $('.info_icon').on("click", function(){
+    $('.video_area').removeClass('off');
+    $('.close_video_player').removeClass('off');
+    $('.video_area').addClass('on');
+    $('.close_video_player').addClass('on')
+  });
+
+  //解説ページのバツボタン押下時
+  $('.close_video_player').on('click', ()=>{
+    $('.video_area').addClass('off');
+    $('.close_video_player').addClass('off')
+    $('.video_area').removeClass('on');
+    $('.close_video_player').removeClass('on');
+  });
+
 }
 
 //画面読み込み時、全てのDOMが読まれた後に、JavaScriptの処理を開始

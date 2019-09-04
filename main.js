@@ -89,7 +89,7 @@ function addRemoveClickEventToList(){
     //ローカルストレージに保存しているキー値と同じ形式にする
     const targetKey = targetValue + targetGroup;
 
-    if(window.confirm(targetLabel + " を削除します。OK?")){
+    if(window.confirm(targetLabel + " を削除します。よろしいですか？")){
       chrome.storage.local.remove(targetKey, () =>{
         e.target.parentNode.remove();
       });
@@ -159,6 +159,17 @@ function listAllRemove(){
   }
 }
 
+function saveProcess(){
+  const text = $('#text_box').val();
+  //チェックされてるチェックボックスの値を全て取得。今回は2つしかチェックボックスが無いので、for文とかで回す必要なし
+  const dataGroup = $('input:checked').val();
+  if(text){
+    saveTextToStorage(text, dataGroup);
+  }else{
+    alert("保存したいテキストを入力してください。");
+  }
+}
+
 function main(){
 
 //チェックボックス押下時の処理。1つのみチェック付けれるようにする。
@@ -169,7 +180,7 @@ $('.checkbox').on("click", function(){
   $(this).prop('checked', true);
 });
 
-//検索ボタン押下時の処理。ボタン押されたら、ストレージから値取ってきて、検索テキストと比較する
+//検索文字入力時の処理。ストレージから値取ってきて、検索テキストと比較する
 $('#searchBox').on("input",function(){
   //検索ボックスが空の時は、何もしない。※何か１文字入力し、バックスペースで文字を消した時何もしない
   if(!($(this).val())){
@@ -191,7 +202,15 @@ $('#searchBox').on("input",function(){
   });
 });
 
-//保存ボタン押下時の処理。
+  //保存ボタン押下時の処理。
+  $('#save').on("click", saveProcess);
+
+  $('#text_box').on("keypress", (e)=>{
+    if(e.keyCode === 13){
+      saveProcess();
+    }
+  });
+  /*
   $('#save').on("click", () =>{
     const text = $('#text_box').val();
     //チェックされてるチェックボックスの値を全て取得。今回は2つしかチェックボックスが無いので、for文とかで回す必要なし
@@ -203,6 +222,7 @@ $('#searchBox').on("input",function(){
     }
 
   });
+  */
 
   //削除モードボタン押下時
   $('input[id="removeModeToggle"]').change((e) =>{
@@ -230,19 +250,25 @@ $('#searchBox').on("input",function(){
   });
 
   //infoアイコン押下時、アイコンの親要素のクラスを追加/削除
-  $('.info_icon').on("click", function(){
+  $('.info_icon').on("click", (e) =>{
     $('.video_area').removeClass('off');
     $('.close_video_player').removeClass('off');
     $('.video_area').addClass('on');
-    $('.close_video_player').addClass('on')
+    $('.close_video_player').addClass('on');
+    $('.video_area').css('transition', '1s');
+
+    $('body').css("transition", "0.25s");
+    $('body').css("height", "600px");
   });
 
   //解説ページのバツボタン押下時
-  $('.close_video_player').on('click', ()=>{
+  $('.close_video_player').on('click', (e)=>{
     $('.video_area').addClass('off');
-    $('.close_video_player').addClass('off')
+    $('.close_video_player').addClass('off');
     $('.video_area').removeClass('on');
     $('.close_video_player').removeClass('on');
+
+    $('body').css("height", "400px");
   });
 
 }

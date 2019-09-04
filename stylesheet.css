@@ -51,7 +51,7 @@ a:visited, a:link{
 
 /* == 検索ボックスと入力ボックス == */
 #searchBox{
-  width: 150px;
+  width: 200px;
   height: 25px;
   margin-left: 30px;
   border: 0;
@@ -65,7 +65,7 @@ a:visited, a:link{
 
 /* == 検索ボックスと入力ボックス == */
 #text_box{
-  width: 150px;
+  width: 200px;
   height: 25px;
   border: 0;
   background: none;
@@ -200,6 +200,7 @@ a:visited, a:link{
   border-style: none;
 }
 
+/* == ?アイコン ホバー時 == */
 .info_icon:hover{
   transform: scale(1.5, 1.5);
   transition: 0.25s;
@@ -211,19 +212,37 @@ a:visited, a:link{
 }
 
 .close_video_player.on{
-  width: 30px;
-  height: 30px;
   transition: 0.25s;
+  width: 20px;
+  height: 20px;
   position: absolute;
   z-index: 101;
-  top: 10;
-  left: 10;
+  top: 15px;
+  left: 15px;
   color: white;
   cursor: pointer;
 }
 
-.video_area.on{
+/* == 動画表示後のxボタン == */
+.close_video_player.on:hover{
   transition: 0.25s;
+  width: 25px;
+  height: 25px;
+}
+
+.how2use_text{
+  text-align: center;
+  font-size: 30px;
+  margin-bottom: 0px;
+  text-decoration: underline;
+  color: #dff9fb;
+}
+
+.how2use_text  > span{
+  background: rgba(158, 249, 251, .3);
+}
+
+.video_area.on{
   position: absolute;
   background-size: cover;
   z-index: 100;
@@ -232,7 +251,7 @@ a:visited, a:link{
   bottom: 0;
   left: 0;
   margin: auto;
-  background: rgba(0, 0, 0, .7);
+  background: rgba(0, 0, 0, .8);
   display: inline-block;
 }
 
@@ -245,4 +264,5 @@ a:visited, a:link{
   margin: auto;
   width: 600px;
   height: 500px;
+  outline: none;
 }

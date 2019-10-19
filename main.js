@@ -80,7 +80,7 @@ function addClickEventToList(){
 function addRemoveClickEventToList(){
   $('#storage_list').children('li').children().off("click");
   $('#storage_list').children('li').children().off("mousedown");
-  $('#storage_list').children('li').children().on("mousedown", (e) =>{
+  $('#storage_list').children('li').children().on("mousedown", function(e){
     const targetGroup = e.target.dataset.group;
     const targetLabel = e.target.childNodes[0].textContent;
     //クリックしたデータがtextだった場合、valueの値をキー値に含む。URLだった場合、hrefの値をキー値に含む。
